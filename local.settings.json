@@ -1,0 +1,23 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "MerakiApiKey": "<from Meraki Dashboard>",
+    "MerakiTargetIp": "1.1.1.1",
+    "MerakiProbeTimespan": "120",
+    "AadTenantId": "<AAD Tenant ID>",
+    "AadClientId": "<Client ID of app registration>",
+    "AadClientSecret": "<Secret for app registration>",
+    "AzSubscriptionId": "<Az Subscription ID>",
+    "AzRouteTableResourceGroup": "<Route Table RG>",
+    "AzRouteTableName": "<Route Table Name>",
+    "AzRouteName": "<Route Name to be updated>",
+    "BlobCnString": "<Blob storage cnstring for state of active device>",
+    "BlobContainerName": "merakiha",
+    "BlobName": "vMXHAPair",
+    "MaxLossPercent": "70",
+    "LogAnalyticsWorkspaceId": "<for Log Analytics Logging>",
+    "LogAnalyticsWorkspaceKey": "<for Log Analytics Logging>"
+  }
+}
