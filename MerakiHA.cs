@@ -7,6 +7,7 @@ using System.Configuration;
 using MerakiHAWatch.Az;
 using System.Collections.Generic;
 using MerakiHAWatch.Model;
+using Newtonsoft.Json;
 
 
 namespace MerakiHAWatch
@@ -33,7 +34,7 @@ namespace MerakiHAWatch
             // route table parameters
             var udrrg = Environment.GetEnvironmentVariable("AzRouteTableResourceGroup");
             var routeTableName = Environment.GetEnvironmentVariable("AzRouteTableName");
-            var routeName = Environment.GetEnvironmentVariable("AzRouteName");
+            var routeNames = JsonConvert.DeserializeObject<List<object>>(Environment.GetEnvironmentVariable("AzRouteNames"));
             // Blob Storage Parameters
             var blobCnString = Environment.GetEnvironmentVariable("BlobCnString");
             var container = Environment.GetEnvironmentVariable("BlobContainerName");
@@ -50,11 +51,14 @@ namespace MerakiHAWatch
             ILog logger = new AzMonLogger(workspaceId, workspaceKey);
             // constructor
             List<RouteInfo> routes = new List<RouteInfo>();
-            routes.Add(new RouteInfo() {  
-                ResourceGroup= udrrg,
-                RouteTableName = routeTableName,
-                RouteName = routeName
-            });
+            foreach (var routeName in routeNames)
+            {
+                routes.Add(new RouteInfo() {  
+                    ResourceGroup= udrrg,
+                    RouteTableName = routeTableName,
+                    RouteName = routeName.ToString()
+                });
+            }
             MerakiHaAgent agent = new MerakiHaAgent(probe, router, blob, logger, routes);
             // probe and failover if needed
             var result = agent.ProbeAndFailover(int.Parse(maxLossPercent));
