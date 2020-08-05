@@ -27,12 +27,36 @@ namespace MerakiHAWatch
             _routes = routes;
         }
 
-        public MerakiProbeResult ProbeAndFailover(int maxLossPercent)
+        public bool CanProbeActive(int maxLossPercent)
         {
             // Get HA Pair from blob storage
             var hapair = _blob.GetNodes();
+
+            // probe standby node
+            var probe = _probe.GetLossLatency(hapair.activeNode.networkId, hapair.activeNode.deviceSerial);
+
+            return ((probe.lossPercent > maxLossPercent) ? false : true);
+        }
+
+        public bool CanProbeStandby(int maxLossPercent)
+        {
+            // Get HA Pair from blob storage
+            var hapair = _blob.GetNodes();
+
+            // probe standby node
+            var probe = _probe.GetLossLatency(hapair.standByNode.networkId, hapair.standByNode.deviceSerial);
+
+            return ((probe.lossPercent > maxLossPercent) ? false : true);
+        }
+
+        public MerakiProbeResult Failover(int maxLossPercent)
+        {
+            // Get HA Pair from blob storage
+            var hapair = _blob.GetNodes();
+
             // probe active node
             var probe = _probe.GetLossLatency(hapair.activeNode.networkId, hapair.activeNode.deviceSerial);
+            
             var logentry = new MerakiProbeResult()
             {
                 latencyMs = probe.latencyMs,
@@ -40,6 +64,7 @@ namespace MerakiHAWatch
                 ActiveVmName = hapair.activeNode.vmName,
                 Failover=false
             };
+
             if (probe.lossPercent > maxLossPercent)
             {
                 // failover updating all route tables
