@@ -4,7 +4,7 @@
     <AzureFunctionsVersion>v3</AzureFunctionsVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.4.4" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.13.0" />
     <PackageReference Include="Microsoft.Azure.Management.Fluent" Version="1.34.0" />
     <PackageReference Include="Microsoft.Azure.Management.Network.Fluent" Version="1.34.0" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.3" />
